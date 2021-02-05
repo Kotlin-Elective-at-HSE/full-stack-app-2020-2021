@@ -16,7 +16,15 @@ fun main() {
         onmessage = {
             val div = document.getElementById("history") as HTMLDivElement
 
-            div.innerHTML = "${it.data as String}<br>${div.innerHTML}"  // XSS
+            val data = decode(it.data as String)
+
+            val newEntry = when (data) {
+                is Message -> "From ${data.senderId}: ${data.message}"
+                is Connected -> "User ${data.id} connected"
+                is Disconnected -> "User ${data.id} disconnected"
+            }
+
+            div.innerHTML = "$newEntry<br>${div.innerHTML}"  // XSS
 
             Unit
         }

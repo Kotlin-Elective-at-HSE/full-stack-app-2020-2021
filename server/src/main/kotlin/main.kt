@@ -7,23 +7,32 @@ class Server : WebSocketServer(InetSocketAddress(8885)) {
 
     var nextId = 0
 
-    override fun onOpen(conn: WebSocket, handshake: ClientHandshake) {
-        conn.setAttachment(nextId)
-        ++nextId  // bad in terms of concurrency
-    }
-
-    override fun onClose(conn: WebSocket, code: Int, reason: String, remote: Boolean) {
-    }
-
-    override fun onMessage(conn: WebSocket, message: String) {
-        val id = conn.getAttachment<Int>()
-        val m = "$id: $message"
+    private fun sendToAll(message: ToClientEvent) {
+        val data = encode(message)
 
         connections.forEach {
             if (it.isOpen) {
-                it.send(m)
+                it.send(data)
             }
         }
+    }
+
+    override fun onOpen(conn: WebSocket, handshake: ClientHandshake) {
+        conn.setAttachment(nextId)
+        ++nextId  // bad in terms of concurrency
+
+        val id: Int = conn.getAttachment()
+        sendToAll(Connected(id))
+    }
+
+    override fun onClose(conn: WebSocket, code: Int, reason: String, remote: Boolean) {
+        val id: Int = conn.getAttachment()
+        sendToAll(Disconnected(id))
+    }
+
+    override fun onMessage(conn: WebSocket, message: String) {
+        val id: Int = conn.getAttachment()
+        sendToAll(Message(id, message))
     }
 
     override fun onError(conn: WebSocket, ex: Exception) {

@@ -1,5 +1,5 @@
 plugins {
-    kotlin("js") version "1.4.20"
+    kotlin("js")
 }
 
 group = "me.servb"
@@ -13,4 +13,8 @@ kotlin {
     js {
         browser()
     }
+}
+
+dependencies {
+    implementation(project(":protocol"))
 }

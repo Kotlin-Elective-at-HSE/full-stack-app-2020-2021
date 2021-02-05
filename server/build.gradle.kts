@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.4.20"
+    kotlin("jvm")
 }
 
 group = "me.servb"
@@ -11,4 +11,5 @@ repositories {
 
 dependencies {
     implementation("org.java-websocket:Java-WebSocket:1.5.1")
+    implementation(project(":protocol"))
 }
