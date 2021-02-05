@@ -9,7 +9,7 @@ class Server : WebSocketServer(InetSocketAddress(8885)) {
 
     override fun onOpen(conn: WebSocket, handshake: ClientHandshake) {
         conn.setAttachment(nextId)
-        ++nextId
+        ++nextId  // bad in terms of concurrency
     }
 
     override fun onClose(conn: WebSocket, code: Int, reason: String, remote: Boolean) {
