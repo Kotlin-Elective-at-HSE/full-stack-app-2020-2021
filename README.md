@@ -14,7 +14,9 @@ The following command will build the web client as a set of files into the `clie
 ./gradlew :client:browserDevelopmentWebpack
 ```
 
-To play, open `index.html` file via a browser. You can duplicate tabs to simulate different clients.
+To chat, open `index.html` file via a browser. You can duplicate tabs to simulate different clients.
+
+Don't forget to specify which server to use via query param. By default, it will be `index.html?ws=localhost:8885`.
 
 ## License
 

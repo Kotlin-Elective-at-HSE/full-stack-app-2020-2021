@@ -6,7 +6,7 @@ import org.w3c.dom.WebSocket
 import org.w3c.dom.url.URL
 
 fun main() {
-    val url = URL(window.location.href).searchParams.get("ws")!!
+    val url = URL(window.location.href).searchParams.get("ws") ?: "localhost:8885"
 
     val ws = WebSocket("ws://$url").apply {
         onopen = {
